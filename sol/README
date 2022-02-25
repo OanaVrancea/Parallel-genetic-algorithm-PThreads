@@ -1,0 +1,27 @@
+Vrancea Oana Roxana, 336 CA
+
+In cadrul acestei teme am initializat in functia main threadurile si structurile 
+care sunt folosite pentru a reprezenta un thread.
+Structura unui thread primeste parametrii precum id-ul unui thread, indicii
+de start si stop, pointeri catre generatia curenta de indivizi si pentru urmatoarea,
+dar si toti parametrii pe care ii continea functia run_genetic_algorithm, pe care 
+am dat-o ca argument threadurilor la crearea acestora.
+In structura individual am mai adaugat un camp, "sum" care reprezinta suma valorilor
+tuturor cromozomilor unui individ.
+In functia run_genetic_algorithm am paralelizat primul for, fiecare thread initializand
+un numar egal de indivizi. Am ales sa paralelizez si for-ul din functia
+cmpfunc care este folosita de qsort. Astfel, am calculat indicii de start si end cu 
+formulele din laborator si am facut ca fiecare thread sa calculeze suma pentru un numar
+de indivizi. Aceasta suma am salvat-o in campul sum al individului corespunzator, 
+parametru dupa care se va face sortarea in cazul in care valorile de fitness sunt egale.
+Analog, am paralelizat si compute_fitness_function pentru a calcula valoarea de fitness,
+dar si for-urile in care se executa copy_individual, mutate_bit_string_1,
+mutate_bit_string_2, precum si for-ul de la final care reseteaza index-ul unui individ.
+Inainte si dupa fiecare for am folosit bariere pentru sincronizarea
+threadurilor.
+In cazul operatiilor pe care nu le-am paralelizat, am pus un singur thread sa le execute.
+Astfel, un singur thread imi executa functia de qsort, crossover, imi interschimba 
+generatiile si imi afiseaza fitness-ul. De asemenea, folosesc acest thread si pentru dezaloca
+memoria.
+Dupa executarea funtiei run_genetic_algorithm de fiecare thread, se da join la threaduri.
+Se distruge bariera si se elibereaza memoria ramasa.
